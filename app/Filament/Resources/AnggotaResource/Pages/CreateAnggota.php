@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAnggota extends CreateRecord
 {
     protected static string $resource = AnggotaResource::class;
+    public function getTitle(): string
+    {
+        return 'Tambah Anggota';
+    }
 }

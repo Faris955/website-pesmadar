@@ -27,6 +27,14 @@ class AnggotaResource extends Resource
     protected static ?string $model = Anggota::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationLabel(): string
+    {
+        return 'Daftar Anggota'; // Ini yang muncul di sidebar kiri
+    }
+    public static function getNavigationIcon(): string
+    {
+        return 'heroicon-o-user-group';
+    }
 
     public static function form(Form $form): Form
     {

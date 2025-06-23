@@ -13,7 +13,14 @@ class ListAnggotas extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Tambah Anggota')
+                ->icon('heroicon-o-user-plus'),
+
         ];
+    }
+    public function getTitle(): string
+    {
+        return 'Daftar Anggota';
     }
 }
