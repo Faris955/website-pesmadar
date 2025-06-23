@@ -24,6 +24,8 @@ class Anggota extends Model
         'path_ktm',
         'path_krs',
         'path_ktp',
+        'status'
+
         // 'status_verifikasi', // uncomment jika Anda menambahkannya di migrasi
     ];
 }

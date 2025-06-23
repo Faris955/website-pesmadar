@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('path_ktm');
             $table->string('path_krs');
             $table->string('path_ktp');
+            $table->enum('status', ['pending', 'verified'])->default('pending');
             $table->timestamps();
         });
     }

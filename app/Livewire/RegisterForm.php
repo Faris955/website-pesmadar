@@ -4,9 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Anggota;
-use Livewire\Attributes\HasForms;
 use Livewire\WithFileUploads;
-use Filament\Notifications\Notification;
+
 
 
 class RegisterForm extends Component
@@ -20,6 +19,8 @@ class RegisterForm extends Component
 
     // Properti untuk Langkah 2 (file)
     public $photo, $ktm, $krs, $ktp;
+    public $isSubmitted = false;
+    public $showForm = false;
     // 2. Validasi Data
     protected function rulesForStep($step)
     {
@@ -44,6 +45,10 @@ class RegisterForm extends Component
             ];
         }
         return [];
+    }
+    public function tampilkanForm()
+    {
+        $this->showForm = true;
     }
 
     // PERBAIKAN 1: Beritahu 'validateOnly' aturan mana yang harus digunakan
@@ -96,15 +101,12 @@ class RegisterForm extends Component
             'path_ktm' => $ktmPath,
             'path_krs' => $krsPath,
             'path_ktp' => $ktpPath,
+            'status' => 'pending',
         ]);
 
-        Notification::make()
-            ->title('Pendaftaran berhasil!')
-            ->body('Terima kasih telah mendaftar. Data Anda akan kami verifikasi.')
-            ->success()
-            ->send();
-
-        return $this->redirect('/sukses'); // Arahkan ke halaman sukses
+        $this->isSubmitted = true;
+        $this->currentStep = 4; // Pindah ke langkah 3 (konfirmasi)
+        // Arahkan ke halaman sukses
     }
 
     // 3. Simpan ke Database (Langsung panggil Model)
@@ -119,6 +121,7 @@ class RegisterForm extends Component
         // 5. Kosongkan kembali input setelah berhasil
         $this->reset('nama_lengkap');
     }
+
 
     // Mengubah metode menjadi untuk submit data identitas
 

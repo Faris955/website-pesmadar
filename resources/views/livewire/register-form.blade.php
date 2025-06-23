@@ -1,6 +1,7 @@
 <div>
     <x-layouts.app>
-        <div class="min-h-screen flex">
+        <div class="min-h-screen flex flex-col md:flex-row">
+
             <!-- Left Column -->
             <div class="hidden md:flex md:w-6/12 lg:w-6/12 relative text-white bg-center bg-cover bg-no-repeat"
                 wire:ignore style="background-image: url('{{ asset('bg.webp') }}');">
@@ -11,9 +12,9 @@
                     <!-- Main Text Container -->
                     <div class="space-y-4 max-w-xl">
                         <h1 class="text-4xl lg:text-5xl font-bold">
-                            Selamat Datang di <span class="text-red-500">PESMADAR</span>
+                            Selamat Datang di <span class="text-red-500">PERSMADAR</span>
                         </h1>
-                        <p class="text-lg text-white/80 leading-relaxed mt-8">
+                        <p class="text-xs md:text-lg text-white/80 leading-relaxed mt-8">
                             Wadah bagi mahasiswa Dawan R di Malang untuk bersatu dan berkembang. Kami berkomitmen untuk
                             mencetak kader pemimpin masa depan yang berintelektual, berbudaya, dan berintegritas untuk
                             membangun tanah leluhur.
@@ -30,7 +31,8 @@
             <div class="w-full md:w-6/12 lg:w-6/12 flex justify-center md:px-8 md:py-4 h-[700px]">
                 <div class="w-full max-w-2xl mx-auto">
 
-                    <div x-data="wizardForm()">
+                    <div>
+
                         <!-- Success Message -->
                         @if (session('sukses'))
                             <div role="alert" class="alert alert-success mb-4" x-show="true" x-transition>
@@ -45,55 +47,48 @@
 
                         <!-- Form Container -->
                         <div class="bg-transparent rounded-xl overflow-hidden">
+
                             <form wire:submit="submitForm" class="p-6">
-                                <template x-if="currentStep === 1">
-                                    <div>
+
+                                {{-- Step 1 --}}
+                                @if ($currentStep === 1)
+                                    <div class="mb-4">
                                         <h3 class="text-xl font-bold text-gray-800">Langkah 1: Data Diri</h3>
                                         <p class="text-sm text-gray-600">Masukkan data pribadi Anda dengan lengkap dan
                                             benar</p>
                                     </div>
-                                </template>
+                                @endif
 
-                                <template x-if="currentStep === 2">
-                                    <div>
+                                {{-- Step 2 --}}
+                                @if ($currentStep === 2)
+                                    <div class="mb-4">
                                         <h3 class="text-xl font-bold text-gray-800">Langkah 2: Unggah Dokumen</h3>
                                         <p class="text-sm text-gray-600">Unggah dokumen yang diminta dengan jelas</p>
                                     </div>
-                                </template>
+                                @endif
 
-                                <template x-if="currentStep === 3">
-                                    <div>
+                                {{-- Step 3 --}}
+                                @if ($currentStep === 3)
+                                    <div class="mb-4">
                                         <h3 class="text-xl font-bold text-gray-800">Langkah 3: Konfirmasi Data</h3>
                                         <p class="text-sm text-gray-600">Periksa kembali data yang telah Anda isi</p>
                                     </div>
-                                </template>
-                                <div class="mb-6 mt-2">
-                                    <!-- Progress Bar -->
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-primary h-2 rounded-full transition-all duration-500 ease-out"
-                                            :style="`width: ${(currentStep / 3) * 100}%`"></div>
-                                    </div>
-                                </div>
+                                @endif
+
                                 <!-- Step 1: Personal Data -->
-                                <div x-show="currentStep === 1" x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="opacity-0 transform translate-x-4"
-                                    x-transition:enter-end="opacity-100 transform translate-x-0"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100 transform translate-x-0"
-                                    x-transition:leave-end="opacity-0 transform -translate-x-4">
+                                <div class="@if ($currentStep !== 1) hidden @endif transition-all">
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                                         <label class="form-control w-full">
                                             <div class="label"><span class="label-text font-medium">Nama Lengkap</span>
                                             </div>
-                                            <input wire:model.blur="nama_lengkap" type="text"
+                                            <input wire:model="nama_lengkap" type="text"
                                                 class="input input-bordered w-full focus:input-primary transition-colors"
                                                 placeholder="Masukkan nama lengkap Anda" />
                                             @error('nama_lengkap')
                                                 <span class="text-error text-xs mt-1">{{ $message }}</span>
                                             @enderror
                                         </label>
-
                                         <label class="form-control w-full">
                                             <div class="label"><span class="label-text font-medium">Email</span></div>
                                             <input wire:model.blur="email" type="email"
@@ -140,7 +135,8 @@
                                         </label>
 
                                         <label class="form-control w-full">
-                                            <div class="label"><span class="label-text font-medium">Asal Kampus</span>
+                                            <div class="label"><span class="label-text font-medium">Asal
+                                                    Kampus</span>
                                             </div>
                                             <input wire:model.blur="kampus" type="text"
                                                 class="input input-bordered w-full focus:input-primary transition-colors"
@@ -175,12 +171,7 @@
                                 </div>
 
                                 <!-- Step 2: Document Upload -->
-                                <div x-show="currentStep === 2" x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="opacity-0 transform translate-x-4"
-                                    x-transition:enter-end="opacity-100 transform translate-x-0"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100 transform translate-x-0"
-                                    x-transition:leave-end="opacity-0 transform -translate-x-4">
+                                <div class="@if ($currentStep !== 2) hidden @endif transition-all">
 
                                     {{-- <div class="mb-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Langkah 2: Unggah Dokumen</h3>
@@ -191,7 +182,7 @@
                                         <!-- Photo Upload -->
                                         <div class="form-control w-full">
                                             <div class="label"><span class="label-text font-medium">Foto Diri (Formal
-                                                    3x4)</span></div>
+                                                    3x4) (.jpg)</span></div>
                                             <input wire:model="photo" type="file"
                                                 class="file-input file-input-bordered w-full focus:file-input-primary transition-colors"
                                                 accept="image/*" />
@@ -213,10 +204,13 @@
                                         <!-- KTM Upload -->
                                         <div class="form-control w-full">
                                             <div class="label"><span class="label-text font-medium">Scan Kartu Tanda
-                                                    Mahasiswa (KTM)</span></div>
+                                                    Mahasiswa (KTM) (.jpg)</span></div>
                                             <input wire:model="ktm" type="file"
                                                 class="file-input file-input-bordered w-full focus:file-input-primary transition-colors"
                                                 accept="image/*,.pdf" />
+                                            <div wire:loading wire:target="ktm" class="text-xs mt-1 text-primary">
+                                                <span class="loading loading-spinner loading-xs"></span> Mengunggah...
+                                            </div>
                                             @if ($ktm && !$errors->has('ktm'))
                                                 <div class="text-success text-xs mt-1 flex items-center">
                                                     <svg class="w-4 h-4 mr-1" fill="currentColor"
@@ -236,10 +230,14 @@
                                         <!-- KRS Upload -->
                                         <div class="form-control w-full">
                                             <div class="label"><span class="label-text font-medium">Scan Kartu
-                                                    Rencana Studi (KRS)</span></div>
+                                                    Rencana Studi (KRS)(.jpg)</span></div>
                                             <input wire:model="krs" type="file"
                                                 class="file-input file-input-bordered w-full focus:file-input-primary transition-colors"
                                                 accept="image/*,.pdf" />
+                                            <div wire:loading wire:target="krs" class="text-xs mt-1 text-primary">
+                                                <span class="loading loading-spinner loading-xs"></span> Mengunggah...
+                                            </div>
+
                                             @if ($krs && !$errors->has('krs'))
                                                 <div class="text-success text-xs mt-1 flex items-center">
                                                     <svg class="w-4 h-4 mr-1" fill="currentColor"
@@ -259,10 +257,14 @@
                                         <!-- KTP Upload -->
                                         <div class="form-control w-full">
                                             <div class="label"><span class="label-text font-medium">Scan Kartu Tanda
-                                                    Penduduk (KTP)</span></div>
+                                                    Penduduk (KTP) (.jpg)</span></div>
                                             <input wire:model="ktp" type="file"
                                                 class="file-input file-input-bordered w-full focus:file-input-primary transition-colors"
                                                 accept="image/*,.pdf" />
+                                            <div wire:loading wire:target="ktp" class="text-xs mt-1 text-primary">
+                                                <span class="loading loading-spinner loading-xs"></span> Mengunggah...
+                                            </div>
+
                                             @if ($ktp && !$errors->has('ktp'))
                                                 <div class="text-success text-xs mt-1 flex items-center">
                                                     <svg class="w-4 h-4 mr-1" fill="currentColor"
@@ -282,17 +284,7 @@
                                 </div>
 
                                 <!-- Step 3: Confirmation -->
-                                <div x-show="currentStep === 3" x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="opacity-0 transform translate-x-4"
-                                    x-transition:enter-end="opacity-100 transform translate-x-0"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100 transform translate-x-0"
-                                    x-transition:leave-end="opacity-0 transform -translate-x-4">
-
-                                    {{-- <div class="mb-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Langkah 3: Konfirmasi Data</h3>
-                        <p class="text-sm text-gray-600">Periksa kembali semua data sebelum mengirim. Pastikan semua informasi sudah benar.</p>
-                    </div> --}}
+                                <div class="@if ($currentStep !== 3) hidden @endif transition-all">
 
                                     <div class="space-y-6">
                                         <!-- Personal Data Summary -->
@@ -408,41 +400,119 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div>
+                                    <!-- Success Notification Page - Replace the form content after submission -->
+                                    <div class="@if ($isSubmitted !== true) hidden @endif transition-all">
+                                        <div class="text-center py-12">
+                                            <!-- Success Icon -->
+                                            <div
+                                                class="mx-auto mb-6 w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-12 h-12 text-green-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </div>
 
-                                <!-- Navigation Buttons -->
-                                <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
-                                    <button type="button" @click="previousStep()" x-show="currentStep > 1"
-                                        x-transition class="btn btn-ghost btn-lg">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 19l-7-7 7-7"></path>
-                                        </svg>
-                                        Kembali
-                                    </button>
+                                            <!-- Success Title -->
+                                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Pendaftaran Berhasil!
+                                            </h3>
 
-                                    <div class="flex space-x-3">
-                                        <button type="button" @click="nextStep()" x-show="currentStep < 3"
-                                            x-transition class="btn btn-primary btn-lg">
-                                            Lanjutkan
-                                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 5l7 7-7 7"></path>
-                                            </svg>
-                                        </button>
+                                            <!-- Success Message -->
+                                            <div
+                                                class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100 mb-6">
+                                                <p class="text-gray-700 leading-relaxed mb-4">
+                                                    Terima kasih,
+                                                    Data pendaftaran Anda telah berhasil dikirim dan sedang dalam proses
+                                                    verifikasi.
+                                                </p>
+                                                <div class="space-y-2 text-sm text-gray-600">
+                                                    <div class="flex items-center justify-center">
+                                                        <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor"
+                                                            viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd"
+                                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                                                clip-rule="evenodd"></path>
+                                                        </svg>
+                                                        Tim kami akan menghubungi Anda dalam 1-3 hari
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                        <button type="submit" x-show="currentStep === 3" x-transition
-                                            class="btn btn-success btn-lg">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                                            </svg>
-                                            Kirim Pendaftaran
-                                        </button>
+                                            <!-- Action Button -->
+                                            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                                                <button type="button" class="btn btn-primary"
+                                                    onclick="window.location.reload()">
+                                                    Daftar Lagi
+                                                </button>
+                                                <button type="button" class="btn btn-ghost"
+                                                    onclick="window.close()">
+                                                    Tutup
+                                                </button>
+                                            </div>
+
+                                            <!-- Contact Info -->
+                                            <div class="mt-8 pt-6 border-t border-gray-200">
+                                                <p class="text-sm text-gray-600 mb-2">Butuh bantuan?</p>
+                                                <div class="flex flex-col sm:flex-row gap-4 justify-center text-sm">
+                                                    <a href="tel:+628123456789"
+                                                        class="text-blue-600 hover:text-blue-800 flex items-center justify-center">
+                                                        <svg class="w-4 h-4 mr-1" fill="currentColor"
+                                                            viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z">
+                                                            </path>
+                                                        </svg>
+                                                        +62 812-3456-789
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!-- Navigation Buttons -->
+                                <div
+                                    class="@if ($isSubmitted === true) hidden @endif transition-all
+                                flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+                                    @if ($currentStep > 1)
+                                        <button type="button" wire:click="previousStep"
+                                            class="btn btn-ghost"wire:loading.attr="disabled">
+                                            <span wire:loading.remove wire:target="previousStep">Kembali</span>
+                                            <span wire:loading wire:target="previousStep" class="flex items-center">
+                                                <svg class="animate-spin h-4 w-4 text-white mr-2"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                        stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor"
+                                                        d="M4 12a8 8 0 018-8v8z"></path>
+                                                </svg>
+
+                                            </span>
+
+                                        </button>
+                                    @endif
+
+                                    @if ($currentStep < 3)
+                                        <button type="button" wire:click="nextStep"
+                                            class="btn btn-primary min-w-[120px]" wire:target="nextStep"
+                                            wire:loading.attr="disabled">
+                                            <span wire:loading.remove wire:target="nextStep">Lanjutkan</span>
+
+                                            <span class="flex flex-row" wire:loading wire:target="nextStep">
+                                                Memproses...
+                                            </span>
+                                        @else
+                                            <button type="submit" wire:click="submitForm"
+                                                wire:loading.attr="disabled" wire:target="submitForm"
+                                                class="btn btn-success">
+                                                Kirim
+                                            </button>
+                                    @endif
+                                </div>
+
                             </form>
                         </div>
                     </div>
@@ -451,24 +521,4 @@
             {{-- end container --}}
         </div>
     </x-layouts.app>
-
-    <script>
-        function wizardForm() {
-            return {
-                currentStep: 1,
-
-                nextStep() {
-                    if (this.currentStep < 3) {
-                        this.currentStep++;
-                    }
-                },
-
-                previousStep() {
-                    if (this.currentStep > 1) {
-                        this.currentStep--;
-                    }
-                }
-            }
-        }
-    </script>
 </div>
